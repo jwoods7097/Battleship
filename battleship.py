@@ -1,8 +1,13 @@
 from graphics import *
 
+p1_ship_grid = Grid()
+p1_hit_grid = Grid()
+p2_ship_grid = Grid()
+p2_hit_grid = Grid()
 
-def move():
-    sq = input("Which square do you want to hit? (ex. F5) ")
+
+def move(player):
+    sq = input(f"Which square will Player {player} hit? (ex. F5) ")
     letter = 0
     if sq[0] == "A":
         letter = 0
@@ -24,13 +29,19 @@ def move():
         letter = 8
     elif sq[0] == "J":
         letter = 9
-    grid[letter, int(sq[1])] = "X"
+
+    if player == 1:
+        p1_hit_grid.grid[letter, int(sq[1])] = "X"
+    else:
+        p2_hit_grid.grid[letter, int(sq[1])] = "X"
 
 
 def main():
-    make_grid()
-    move()
-    make_grid()
+    console_setup()
+    p1_hit_grid.display_grid()
+    move(1)
+    clear_screen()
+    p1_hit_grid.display_grid()
 
 
 if __name__ == "__main__":
