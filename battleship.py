@@ -84,7 +84,11 @@ def set_ships(player):
                     # we have to use the try and catch method because an exception would occur if we tried to access elements outside
                     # the array's size
                     try:
-                        p1_ship_grid.grid[letter, int(place[1]) + h]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter, int(place[1]) + h]
+                        else:
+                            p2_ship_grid.grid[letter, int(place[1]) + h]
+                       
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -119,7 +123,11 @@ def set_ships(player):
                 indicator = 0
                 for h in range(5):
                     try:
-                        p1_ship_grid.grid[letter + h, int(place[1])]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter + h, int(place[1])]
+                        else:
+                            p2_ship_grid.grid[letter + h, int(place[1])]
+                        
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -134,7 +142,11 @@ def set_ships(player):
     if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(5):
-            p1_ship_grid.grid[letter, int(place[1])-h] = "C"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "C"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "C"
+            
             if h != 0:
                 temp = int(temp)-1
             spots_used.append(place[0].upper() + str(temp))
@@ -142,7 +154,11 @@ def set_ships(player):
     elif direction.upper() == "RIGHT":
         temp = place[1]
         for h in range(5):
-            p1_ship_grid.grid[letter, int(place[1])+h] = "C"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])+h] = "C"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])+h] = "C"
+            
             if h != 0:
                 temp = int(temp)+1
             spots_used.append(place[0].upper() + str(temp))
@@ -150,7 +166,11 @@ def set_ships(player):
     elif direction.upper() == "UP":
         temp = place[0]
         for h in range(5):
-            p1_ship_grid.grid[letter-h, int(place[1])] = "C"
+            if (player == 1):
+                p1_ship_grid.grid[letter-h, int(place[1])] = "C"
+            else:
+                p2_ship_grid.grid[letter-h, int(place[1])] = "C"
+           
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
@@ -158,13 +178,19 @@ def set_ships(player):
     elif direction.upper() == "DOWN":
         temp = place[0]
         for h in range(5):
-            p1_ship_grid.grid[letter+h, int(place[1])] = "C"
+            if (player == 1):
+                p1_ship_grid.grid[letter+h, int(place[1])] = "C"
+            else:
+                p2_ship_grid.grid[letter+h, int(place[1])] = "C"
+            
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
 
-    p1_ship_grid.display_grid()
-
+    if (player == 1):
+        p1_ship_grid.display_grid()
+    else:
+        p2_ship_grid.display_grid()
 
     # Sets Battleship position
     j = 0
@@ -197,7 +223,11 @@ def set_ships(player):
                 indicator = 0
                 for h in range(4):
                     try:
-                        p1_ship_grid.grid[letter, int(place[1]) + h]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter, int(place[1]) + h]
+                        else:
+                            p2_ship_grid.grid[letter, int(place[1]) + h]
+       
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -232,7 +262,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(4):
                     try:
-                        p1_ship_grid.grid[letter + h, int(place[1])]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter + h, int(place[1])]
+                        else:
+                            p2_ship_grid.grid[letter + h, int(place[1])]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -247,7 +280,10 @@ def set_ships(player):
     if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(4):
-            p1_ship_grid.grid[letter, int(place[1]) - h] = "B"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "B"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "B"
             if h != 0:
                 temp = int(temp) - 1
             spots_used.append(place[0].upper() + str(temp))
@@ -256,7 +292,10 @@ def set_ships(player):
     elif direction.upper() == "RIGHT":
         temp = place[1]
         for h in range(4):
-            p1_ship_grid.grid[letter, int(place[1]) + h] = "B"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])+h] = "B"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])+h] = "B"
             if h != 0:
                 temp = int(temp) + 1
             spots_used.append(place[0].upper() + str(temp))
@@ -265,7 +304,10 @@ def set_ships(player):
     elif direction.upper() == "UP":
         temp = place[0]
         for h in range(4):
-            p1_ship_grid.grid[letter - h, int(place[1])] = "B"
+            if (player == 1):
+                p1_ship_grid.grid[letter-h, int(place[1])] = "B"
+            else:
+                p2_ship_grid.grid[letter-h, int(place[1])] = "B"
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
@@ -274,13 +316,19 @@ def set_ships(player):
     elif direction.upper() == "DOWN":
         temp = place[0]
         for h in range(4):
-            p1_ship_grid.grid[letter + h, int(place[1])] = "B"
+            if (player == 1):
+                p1_ship_grid.grid[letter+h, int(place[1])] = "B"
+            else:
+                p2_ship_grid.grid[letter+h, int(place[1])] = "B"
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
             print(spots_used)
 
-    p1_ship_grid.display_grid()
+    if (player == 1):
+        p1_ship_grid.display_grid()
+    else:
+        p2_ship_grid.display_grid()
 
 
     # Sets Cruiser position
@@ -314,7 +362,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(3):
                     try:
-                        p1_ship_grid.grid[letter, int(place[1]) + h]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter, int(place[1]) + h]
+                        else:
+                            p2_ship_grid.grid[letter, int(place[1]) + h]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -349,7 +400,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(3):
                     try:
-                        p1_ship_grid.grid[letter + h, int(place[1])]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter + h, int(place[1])]
+                        else:
+                            p2_ship_grid.grid[letter + h, int(place[1])]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -364,7 +418,10 @@ def set_ships(player):
     if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(3):
-            p1_ship_grid.grid[letter, int(place[1])-h] = "R"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
             if h != 0:
                 temp = int(temp)-1
             spots_used.append(place[0].upper() + str(temp))
@@ -373,7 +430,10 @@ def set_ships(player):
     elif direction.upper() == "RIGHT":
         temp = place[1]
         for h in range(3):
-            p1_ship_grid.grid[letter, int(place[1])+h] = "R"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
             if h != 0:
                 temp = int(temp)+1
             spots_used.append(place[0].upper() + str(temp))
@@ -382,7 +442,10 @@ def set_ships(player):
     elif direction.upper() == "UP":
         temp = place[0]
         for h in range(3):
-            p1_ship_grid.grid[letter-h, int(place[1])] = "R"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
@@ -391,14 +454,19 @@ def set_ships(player):
     elif direction.upper() == "DOWN":
         temp = place[0]
         for h in range(3):
-            p1_ship_grid.grid[letter+h, int(place[1])] = "R"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
             print(spots_used)
 
-    p1_ship_grid.display_grid()
-
+    if (player == 1):
+        p1_ship_grid.display_grid()
+    else:
+        p2_ship_grid.display_grid()
 
     # Sets Submarine position
     j = 0
@@ -431,7 +499,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(3):
                     try:
-                        p1_ship_grid.grid[letter, int(place[1]) + h]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter, int(place[1]) + h]
+                        else:
+                            p2_ship_grid.grid[letter, int(place[1]) + h]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -466,7 +537,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(3):
                     try:
-                        p1_ship_grid.grid[letter + h, int(place[1])]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter + h, int(place[1])]
+                        else:
+                            p2_ship_grid.grid[letter + h, int(place[1])]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -481,7 +555,10 @@ def set_ships(player):
     if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(3):
-            p1_ship_grid.grid[letter, int(place[1]) - h] = "S"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
             if h != 0:
                 temp = int(temp) - 1
             spots_used.append(place[0].upper() + str(temp))
@@ -490,7 +567,10 @@ def set_ships(player):
     elif direction.upper() == "RIGHT":
         temp = place[1]
         for h in range(3):
-            p1_ship_grid.grid[letter, int(place[1]) + h] = "S"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
             if h != 0:
                 temp = int(temp) + 1
             spots_used.append(place[0].upper() + str(temp))
@@ -499,7 +579,10 @@ def set_ships(player):
     elif direction.upper() == "UP":
         temp = place[0]
         for h in range(3):
-            p1_ship_grid.grid[letter - h, int(place[1])] = "S"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
@@ -508,13 +591,19 @@ def set_ships(player):
     elif direction.upper() == "DOWN":
         temp = place[0]
         for h in range(3):
-            p1_ship_grid.grid[letter + h, int(place[1])] = "S"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
             print(spots_used)
 
-    p1_ship_grid.display_grid()
+    if (player == 1):
+        p1_ship_grid.display_grid()
+    else:
+        p2_ship_grid.display_grid()
 
 
     # Sets Destroyer position
@@ -548,7 +637,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(2):
                     try:
-                        p1_ship_grid.grid[letter, int(place[1]) + h]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter, int(place[1]) + h]
+                        else:
+                            p2_ship_grid.grid[letter, int(place[1]) + h]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -583,7 +675,10 @@ def set_ships(player):
                 indicator = 0
                 for h in range(2):
                     try:
-                        p1_ship_grid.grid[letter + h, int(place[1])]
+                        if (player == 1):
+                            p1_ship_grid.grid[letter + h, int(place[1])]
+                        else:
+                            p2_ship_grid.grid[letter + h, int(place[1])]
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -598,7 +693,10 @@ def set_ships(player):
     if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(5):
-            p1_ship_grid.grid[letter, int(place[1]) - h] = "D"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
             if h != 0:
                 temp = int(temp) - 1
             spots_used.append(place[0].upper() + str(temp))
@@ -607,7 +705,10 @@ def set_ships(player):
     elif direction.upper() == "RIGHT":
         temp = place[1]
         for h in range(2):
-            p1_ship_grid.grid[letter, int(place[1]) + h] = "D"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
             if h != 0:
                 temp = int(temp) + 1
             spots_used.append(place[0].upper() + str(temp))
@@ -616,7 +717,10 @@ def set_ships(player):
     elif direction.upper() == "UP":
         temp = place[0]
         for h in range(2):
-            p1_ship_grid.grid[letter - h, int(place[1])] = "D"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
@@ -625,13 +729,19 @@ def set_ships(player):
     elif direction.upper() == "DOWN":
         temp = place[0]
         for h in range(2):
-            p1_ship_grid.grid[letter + h, int(place[1])] = "D"
+            if (player == 1):
+                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+            else:
+                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
             print(spots_used)
 
-    p1_ship_grid.display_grid()
+    if (player == 1):
+        p1_ship_grid.display_grid()
+    else:
+        p2_ship_grid.display_grid()
 
 
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
@@ -681,7 +791,20 @@ def set_letter(letter):
         l = 9
     return l
 
-
+def main_loop():
+    who = 1
+    winner = "none"
+    while (winner == "none"):
+        move(who)
+        if (who == 1):
+            who = 2
+            p1_hit_grid.display_grid()
+            cont = input("Press enter to continue...")
+        else:
+            who = 1
+            p2_hit_grid.display_grid()
+            cont = input("Press enter to continue...")
+            
 def main():
     console_setup()
     p1_ship_grid.display_grid()
@@ -691,7 +814,7 @@ def main():
     p2_ship_grid.display_grid()
     set_ships(2)
     p2_ship_grid.display_grid()
-
-
+    main_loop()
+    
 if __name__ == "__main__":
     main()

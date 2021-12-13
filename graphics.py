@@ -28,7 +28,7 @@ class Grid:
     GRID_SIZE = 10
 
     def __init__(self):
-        self.grid = np.array([['*' for i in range(Grid.GRID_SIZE)] for j in range(Grid.GRID_SIZE)])
+        self.grid = np.array([['·' for i in range(Grid.GRID_SIZE)] for j in range(Grid.GRID_SIZE)])
 
     def display_grid(self):
         print()
