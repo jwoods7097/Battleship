@@ -5,40 +5,11 @@ p1_hit_grid = Grid()
 p2_ship_grid = Grid()
 p2_hit_grid = Grid()
 
+
 spots_used = []
 
-# Places an 'X' in the desired spot of the user
-def move(player):
-    sq = input(f"Which square will Player {player} hit? (ex. F5) ")
-    letter = 0
-    if sq[0] == "A":
-        letter = 0
-    elif sq[0] == "B":
-        letter = 1
-    elif sq[0] == "C":
-        letter = 2
-    elif sq[0] == "D":
-        letter = 3
-    elif sq[0] == "E":
-        letter = 4
-    elif sq[0] == "F":
-        letter = 5
-    elif sq[0] == "G":
-        letter = 6
-    elif sq[0] == "H":
-        letter = 7
-    elif sq[0] == "I":
-        letter = 8
-    elif sq[0] == "J":
-        letter = 9
 
-    if player == 1:
-        p1_hit_grid.grid[letter, int(sq[1])] = "X"
-    else:
-        p2_hit_grid.grid[letter, int(sq[1])] = "X"
-
-
-def set_ships_init(player, ship_type, ship_type_init):
+def set_ships_init(player, ship_type, ship_type_init, ship_length):
     # Sets Aircraft Carrier position
     j = 0
     # Calls the data_validation method to get input from user and validate it
@@ -56,7 +27,7 @@ def set_ships_init(player, ship_type, ship_type_init):
             if direction.upper() == "LEFT":
                 indicator = 0
                 # This for statement goes through the squares the ship would take up and see if it falls within the array's size
-                for h in range(5):
+                for h in range(ship_length):
                     if int(place[1]) - h != 0:
                         pass
                     # If the equation above == 0 and h does not equal four then flip the switch (var indicator in this case)
@@ -67,26 +38,21 @@ def set_ships_init(player, ship_type, ship_type_init):
                 if indicator == 1:
                     # And ask the user for another option to try
                     hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "RIGHT":
-                        direction = "RIGHT"
-                    else:
-                        direction = ""
                 else:
-                    for h in range(5):
-                        temp = place[1]
-                        if h != 0:
-                            temp = int(temp) - 1
-                            if check(place[0].upper() + str(temp)):
-                                indicator = 1
-                                break
-                            else:
-                                indicator = 2
+                    temp = place[1]
+                    for h in range(ship_length):
+                        temp = int(temp) - 1
+                        if check(place[0].upper() + str(temp)):
+                            indicator = 1
+                            break
+                        else:
+                            indicator = 2
                     if indicator != 2:
                         hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
             elif direction.upper() == "RIGHT":
                 indicator = 0
-                for h in range(5):
+                for h in range(ship_length):
                     # This one differs a little bit compared to going left because an array only has so much size as defined
                     # in the graphics.py file. Because of this, instead of checking to see if the previous equation equaled 0,
                     # we have to use the try and catch method because an exception would occur if we tried to access elements outside
@@ -101,20 +67,15 @@ def set_ships_init(player, ship_type, ship_type_init):
                         indicator = 1
                 if indicator == 1:
                     hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "LEFT":
-                        direction = "LEFT"
-                    else:
-                        direction = ""
                 else:
                     temp = place[1]
-                    for h in range(5):
-                        if h != 0:
-                            temp = int(temp) + 1
-                            if check(place[0].upper() + str(temp)):
-                                indicator = 1
-                                break
-                            else:
-                                indicator = 2
+                    for h in range(ship_length):
+                        temp = int(temp) + 1
+                        if check(place[0].upper() + str(temp)):
+                            indicator = 1
+                            break
+                        else:
+                            indicator = 2
                     if indicator != 2:
                         hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
@@ -122,7 +83,7 @@ def set_ships_init(player, ship_type, ship_type_init):
             direction = input("Up or down? ")
             if direction.upper() == "UP":
                 indicator = 0
-                for h in range(5):
+                for h in range(ship_length):
                     if letter - h != 0:
                         pass
                     elif h != 4:
@@ -130,26 +91,21 @@ def set_ships_init(player, ship_type, ship_type_init):
                         break
                 if indicator == 1:
                     hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "DOWN":
-                        direction = "DOWN"
-                    else:
-                        direction = ""
                 else:
                     temp = place[0]
-                    for h in range(5):
-                        if h != 0:
-                            temp = chr(ord(temp.upper()) - 1)
-                            if check(temp.upper() + place[1]):
-                                indicator = 1
-                                break
-                            else:
-                                indicator = 2
+                    for h in range(ship_length):
+                        temp = chr(ord(temp.upper()) - 1)
+                        if check(temp.upper() + place[1]):
+                            indicator = 1
+                            break
+                        else:
+                            indicator = 2
                     if indicator != 2:
                         hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
             elif direction.upper() == "DOWN":
                 indicator = 0
-                for h in range(5):
+                for h in range(ship_length):
                     try:
                         if (player == 1):
                             p1_ship_grid.grid[letter + h, int(place[1])]
@@ -160,26 +116,21 @@ def set_ships_init(player, ship_type, ship_type_init):
                         indicator = 1
                 if indicator == 1:
                     hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "UP":
-                        direction = "UP"
-                    else:
-                        direction = ""
                 else:
                     temp = place[0]
-                    for h in range(5):
-                        if h != 0:
-                            temp = chr(ord(temp.upper()) + 1)
-                            if check(temp.upper() + place[1]):
-                                indicator = 1
-                                break
-                            else:
-                                indicator = 2
+                    for h in range(ship_length):
+                        temp = chr(ord(temp.upper()) + 1)
+                        if check(temp.upper() + place[1]):
+                            indicator = 1
+                            break
+                        else:
+                            indicator = 2
                     if indicator != 2:
                         hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
     if direction.upper() == "LEFT":
         temp = place[1]
-        for h in range(5):
+        for h in range(ship_length):
             if (player == 1):
                 p1_ship_grid.grid[letter, int(place[1]) - h] = ship_type_init
             else:
@@ -191,7 +142,7 @@ def set_ships_init(player, ship_type, ship_type_init):
 
     elif direction.upper() == "RIGHT":
         temp = place[1]
-        for h in range(5):
+        for h in range(ship_length):
             if (player == 1):
                 p1_ship_grid.grid[letter, int(place[1]) + h] = ship_type_init
             else:
@@ -203,7 +154,7 @@ def set_ships_init(player, ship_type, ship_type_init):
 
     elif direction.upper() == "UP":
         temp = place[0]
-        for h in range(5):
+        for h in range(ship_length):
             if (player == 1):
                 p1_ship_grid.grid[letter - h, int(place[1])] = ship_type_init
             else:
@@ -215,7 +166,7 @@ def set_ships_init(player, ship_type, ship_type_init):
 
     elif direction.upper() == "DOWN":
         temp = place[0]
-        for h in range(5):
+        for h in range(ship_length):
             if (player == 1):
                 p1_ship_grid.grid[letter + h, int(place[1])] = ship_type_init
             else:
@@ -234,12 +185,11 @@ def set_ships_init(player, ship_type, ship_type_init):
 # This method sets the ships to the proper spots on the 'board' (or grid) depending on what the user inputs
 def set_ships(player):
 
-    set_ships_init(player, "Aircraft Carrier", "C")
-    print(spots_used)
-    set_ships_init(player, "Battleship", "B")
-    set_ships_init(player, "Carrier", "R")
-    set_ships_init(player, "Submarine", "S")
-    set_ships_init(player, "Destroyer", "D")
+    set_ships_init(player, "Aircraft Carrier", "C", 5)
+    set_ships_init(player, "Battleship", "B", 4)
+    set_ships_init(player, "Carrier", "R", 3)
+    set_ships_init(player, "Submarine", "S", 3)
+    set_ships_init(player, "Destroyer", "D", 2)
 
 
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
