@@ -59,7 +59,7 @@ def set_ships_init(player, ship_type, ship_type_init):
                 for h in range(5):
                     if int(place[1]) - h != 0:
                         pass
-                    # If the phrase above == 0 and h does not equal four then flip the switch (var indicator in this case)
+                    # If the equation above == 0 and h does not equal four then flip the switch (var indicator in this case)
                     elif h != 4:
                         indicator = 1
                         break
@@ -72,7 +72,17 @@ def set_ships_init(player, ship_type, ship_type_init):
                     else:
                         direction = ""
                 else:
-                    indicator = 2
+                    for h in range(5):
+                        temp = place[1]
+                        if h != 0:
+                            temp = int(temp) - 1
+                            if check(place[0].upper() + str(temp)):
+                                indicator = 1
+                                break
+                            else:
+                                indicator = 2
+                    if indicator != 2:
+                        hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
             elif direction.upper() == "RIGHT":
                 indicator = 0
@@ -96,7 +106,17 @@ def set_ships_init(player, ship_type, ship_type_init):
                     else:
                         direction = ""
                 else:
-                    indicator = 2
+                    temp = place[1]
+                    for h in range(5):
+                        if h != 0:
+                            temp = int(temp) + 1
+                            if check(place[0].upper() + str(temp)):
+                                indicator = 1
+                                break
+                            else:
+                                indicator = 2
+                    if indicator != 2:
+                        hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
         if hv.upper() == "VERTICAL" or hv.upper() == "V":
             direction = input("Up or down? ")
@@ -115,7 +135,17 @@ def set_ships_init(player, ship_type, ship_type_init):
                     else:
                         direction = ""
                 else:
-                    indicator = 2
+                    temp = place[0]
+                    for h in range(5):
+                        if h != 0:
+                            temp = chr(ord(temp.upper()) - 1)
+                            if check(temp.upper() + place[1]):
+                                indicator = 1
+                                break
+                            else:
+                                indicator = 2
+                    if indicator != 2:
+                        hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
             elif direction.upper() == "DOWN":
                 indicator = 0
@@ -135,7 +165,17 @@ def set_ships_init(player, ship_type, ship_type_init):
                     else:
                         direction = ""
                 else:
-                    indicator = 2
+                    temp = place[0]
+                    for h in range(5):
+                        if h != 0:
+                            temp = chr(ord(temp.upper()) + 1)
+                            if check(temp.upper() + place[1]):
+                                indicator = 1
+                                break
+                            else:
+                                indicator = 2
+                    if indicator != 2:
+                        hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
 
     if direction.upper() == "LEFT":
         temp = place[1]
@@ -195,10 +235,12 @@ def set_ships_init(player, ship_type, ship_type_init):
 def set_ships(player):
 
     set_ships_init(player, "Aircraft Carrier", "C")
+    print(spots_used)
     set_ships_init(player, "Battleship", "B")
     set_ships_init(player, "Carrier", "R")
     set_ships_init(player, "Submarine", "S")
     set_ships_init(player, "Destroyer", "D")
+
 
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
 # Also checks to see if another ship occupies the desired space using the 'check' method
