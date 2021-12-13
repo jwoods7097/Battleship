@@ -38,13 +38,11 @@ def move(player):
         p2_hit_grid.grid[letter, int(sq[1])] = "X"
 
 
-# This method sets the ships to the proper spots on the 'board' (or grid) depending on what the user inputs
-def set_ships(player):
-
+def set_ships_init(player, ship_type, ship_type_init):
     # Sets Aircraft Carrier position
     j = 0
     # Calls the data_validation method to get input from user and validate it
-    place = data_validation(player, "Aircraft Carrier")
+    place = data_validation(player, ship_type)
     # Converts the letter to an integer to make it compatable with arrays
     letter = set_letter(place[0].upper())
     hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
@@ -88,7 +86,7 @@ def set_ships(player):
                             p1_ship_grid.grid[letter, int(place[1]) + h]
                         else:
                             p2_ship_grid.grid[letter, int(place[1]) + h]
-                       
+
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -127,7 +125,7 @@ def set_ships(player):
                             p1_ship_grid.grid[letter + h, int(place[1])]
                         else:
                             p2_ship_grid.grid[letter + h, int(place[1])]
-                        
+
                     except:
                         indicator = 1
                 if indicator == 1:
@@ -143,606 +141,64 @@ def set_ships(player):
         temp = place[1]
         for h in range(5):
             if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "C"
+                p1_ship_grid.grid[letter, int(place[1]) - h] = ship_type_init
             else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "C"
-            
-            if h != 0:
-                temp = int(temp)-1
-            spots_used.append(place[0].upper() + str(temp))
+                p2_ship_grid.grid[letter, int(place[1]) - h] = ship_type_init
 
-    elif direction.upper() == "RIGHT":
-        temp = place[1]
-        for h in range(5):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])+h] = "C"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])+h] = "C"
-            
-            if h != 0:
-                temp = int(temp)+1
-            spots_used.append(place[0].upper() + str(temp))
-
-    elif direction.upper() == "UP":
-        temp = place[0]
-        for h in range(5):
-            if (player == 1):
-                p1_ship_grid.grid[letter-h, int(place[1])] = "C"
-            else:
-                p2_ship_grid.grid[letter-h, int(place[1])] = "C"
-           
-            if h != 0:
-                temp = chr(ord(temp.upper()) - 1)
-            spots_used.append(temp.upper() + place[1])
-
-    elif direction.upper() == "DOWN":
-        temp = place[0]
-        for h in range(5):
-            if (player == 1):
-                p1_ship_grid.grid[letter+h, int(place[1])] = "C"
-            else:
-                p2_ship_grid.grid[letter+h, int(place[1])] = "C"
-            
-            if h != 0:
-                temp = chr(ord(temp.upper()) + 1)
-            spots_used.append(temp.upper() + place[1])
-
-    if (player == 1):
-        p1_ship_grid.display_grid()
-    else:
-        p2_ship_grid.display_grid()
-
-    # Sets Battleship position
-    j = 0
-    place = data_validation(player, "Battleship")
-    letter = set_letter(place[0].upper())
-    hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
-
-    indicator = 0
-    while indicator != 2:
-        if hv.upper() == "HORIZONTAL" or hv.upper() == "H":
-            direction = input("Left or right? ")
-            if direction.upper() == "LEFT":
-                indicator = 0
-                for h in range(4):
-                    if int(place[1]) - h != 0:
-                        pass
-                    elif h != 3:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "RIGHT":
-                        direction = "RIGHT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "RIGHT":
-                indicator = 0
-                for h in range(4):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter, int(place[1]) + h]
-                        else:
-                            p2_ship_grid.grid[letter, int(place[1]) + h]
-       
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "LEFT":
-                        direction = "LEFT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-        if hv.upper() == "VERTICAL" or hv.upper() == "V":
-            direction = input("Up or down? ")
-            if direction.upper() == "UP":
-                indicator = 0
-                for h in range(4):
-                    if letter - h != 0:
-                        pass
-                    elif h != 3:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "DOWN":
-                        direction = "DOWN"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "DOWN":
-                indicator = 0
-                for h in range(4):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter + h, int(place[1])]
-                        else:
-                            p2_ship_grid.grid[letter + h, int(place[1])]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "UP":
-                        direction = "UP"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-    if direction.upper() == "LEFT":
-        temp = place[1]
-        for h in range(4):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "B"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "B"
             if h != 0:
                 temp = int(temp) - 1
             spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
 
     elif direction.upper() == "RIGHT":
-        temp = place[1]
-        for h in range(4):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])+h] = "B"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])+h] = "B"
-            if h != 0:
-                temp = int(temp) + 1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
-
-    elif direction.upper() == "UP":
-        temp = place[0]
-        for h in range(4):
-            if (player == 1):
-                p1_ship_grid.grid[letter-h, int(place[1])] = "B"
-            else:
-                p2_ship_grid.grid[letter-h, int(place[1])] = "B"
-            if h != 0:
-                temp = chr(ord(temp.upper()) - 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    elif direction.upper() == "DOWN":
-        temp = place[0]
-        for h in range(4):
-            if (player == 1):
-                p1_ship_grid.grid[letter+h, int(place[1])] = "B"
-            else:
-                p2_ship_grid.grid[letter+h, int(place[1])] = "B"
-            if h != 0:
-                temp = chr(ord(temp.upper()) + 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    if (player == 1):
-        p1_ship_grid.display_grid()
-    else:
-        p2_ship_grid.display_grid()
-
-
-    # Sets Cruiser position
-    j = 0
-    place = data_validation(player, "Cruiser")
-    letter = set_letter(place[0].upper())
-    hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
-
-    indicator = 0
-    while indicator != 2:
-        if hv.upper() == "HORIZONTAL" or hv.upper() == "H":
-            direction = input("Left or right? ")
-            if direction.upper() == "LEFT":
-                indicator = 0
-                for h in range(3):
-                    if int(place[1]) - h != 0:
-                        pass
-                    elif h != 2:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "RIGHT":
-                        direction = "RIGHT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "RIGHT":
-                indicator = 0
-                for h in range(3):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter, int(place[1]) + h]
-                        else:
-                            p2_ship_grid.grid[letter, int(place[1]) + h]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "LEFT":
-                        direction = "LEFT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-        if hv.upper() == "VERTICAL" or hv.upper() == "V":
-            direction = input("Up or down? ")
-            if direction.upper() == "UP":
-                indicator = 0
-                for h in range(3):
-                    if letter - h != 0:
-                        pass
-                    elif h != 2:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "DOWN":
-                        direction = "DOWN"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "DOWN":
-                indicator = 0
-                for h in range(3):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter + h, int(place[1])]
-                        else:
-                            p2_ship_grid.grid[letter + h, int(place[1])]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "UP":
-                        direction = "UP"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-    if direction.upper() == "LEFT":
-        temp = place[1]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
-            if h != 0:
-                temp = int(temp)-1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
-
-    elif direction.upper() == "RIGHT":
-        temp = place[1]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
-            if h != 0:
-                temp = int(temp)+1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
-
-    elif direction.upper() == "UP":
-        temp = place[0]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
-            if h != 0:
-                temp = chr(ord(temp.upper()) - 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    elif direction.upper() == "DOWN":
-        temp = place[0]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "R"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "R"
-            if h != 0:
-                temp = chr(ord(temp.upper()) + 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    if (player == 1):
-        p1_ship_grid.display_grid()
-    else:
-        p2_ship_grid.display_grid()
-
-    # Sets Submarine position
-    j = 0
-    place = data_validation(player, "Submarine")
-    letter = set_letter(place[0].upper())
-    hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
-
-    indicator = 0
-    while indicator != 2:
-        if hv.upper() == "HORIZONTAL" or hv.upper() == "H":
-            direction = input("Left or right? ")
-            if direction.upper() == "LEFT":
-                indicator = 0
-                for h in range(3):
-                    if int(place[1]) - h != 0:
-                        pass
-                    elif h != 4:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "RIGHT":
-                        direction = "RIGHT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "RIGHT":
-                indicator = 0
-                for h in range(3):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter, int(place[1]) + h]
-                        else:
-                            p2_ship_grid.grid[letter, int(place[1]) + h]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "LEFT":
-                        direction = "LEFT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-        if hv.upper() == "VERTICAL" or hv.upper() == "V":
-            direction = input("Up or down? ")
-            if direction.upper() == "UP":
-                indicator = 0
-                for h in range(3):
-                    if letter - h != 0:
-                        pass
-                    elif h != 4:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "DOWN":
-                        direction = "DOWN"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "DOWN":
-                indicator = 0
-                for h in range(3):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter + h, int(place[1])]
-                        else:
-                            p2_ship_grid.grid[letter + h, int(place[1])]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "UP":
-                        direction = "UP"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-    if direction.upper() == "LEFT":
-        temp = place[1]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
-            if h != 0:
-                temp = int(temp) - 1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
-
-    elif direction.upper() == "RIGHT":
-        temp = place[1]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
-            if h != 0:
-                temp = int(temp) + 1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
-
-    elif direction.upper() == "UP":
-        temp = place[0]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
-            if h != 0:
-                temp = chr(ord(temp.upper()) - 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    elif direction.upper() == "DOWN":
-        temp = place[0]
-        for h in range(3):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "S"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "S"
-            if h != 0:
-                temp = chr(ord(temp.upper()) + 1)
-            spots_used.append(temp.upper() + place[1])
-            print(spots_used)
-
-    if (player == 1):
-        p1_ship_grid.display_grid()
-    else:
-        p2_ship_grid.display_grid()
-
-
-    # Sets Destroyer position
-    j = 0
-    place = data_validation(player, "Destroyer")
-    letter = set_letter(place[0].upper())
-    hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
-
-    indicator = 0
-    while indicator != 2:
-        if hv.upper() == "HORIZONTAL" or hv.upper() == "H":
-            direction = input("Left or right? ")
-            if direction.upper() == "LEFT":
-                indicator = 0
-                for h in range(2):
-                    if int(place[1]) - h != 0:
-                        pass
-                    elif h != 4:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "RIGHT":
-                        direction = "RIGHT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "RIGHT":
-                indicator = 0
-                for h in range(2):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter, int(place[1]) + h]
-                        else:
-                            p2_ship_grid.grid[letter, int(place[1]) + h]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "LEFT":
-                        direction = "LEFT"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-        if hv.upper() == "VERTICAL" or hv.upper() == "V":
-            direction = input("Up or down? ")
-            if direction.upper() == "UP":
-                indicator = 0
-                for h in range(2):
-                    if letter - h != 0:
-                        pass
-                    elif h != 4:
-                        indicator = 1
-                        break
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "DOWN":
-                        direction = "DOWN"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-            elif direction.upper() == "DOWN":
-                indicator = 0
-                for h in range(2):
-                    try:
-                        if (player == 1):
-                            p1_ship_grid.grid[letter + h, int(place[1])]
-                        else:
-                            p2_ship_grid.grid[letter + h, int(place[1])]
-                    except:
-                        indicator = 1
-                if indicator == 1:
-                    hv = input("Cannot be done. Pick another direction: ((V)ertical) or (H)orizontal): ")
-                    if hv.upper() == "UP":
-                        direction = "UP"
-                    else:
-                        direction = ""
-                else:
-                    indicator = 2
-
-    if direction.upper() == "LEFT":
         temp = place[1]
         for h in range(5):
             if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+                p1_ship_grid.grid[letter, int(place[1]) + h] = ship_type_init
             else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
-            if h != 0:
-                temp = int(temp) - 1
-            spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
+                p2_ship_grid.grid[letter, int(place[1]) + h] = ship_type_init
 
-    elif direction.upper() == "RIGHT":
-        temp = place[1]
-        for h in range(2):
-            if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
-            else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
             if h != 0:
                 temp = int(temp) + 1
             spots_used.append(place[0].upper() + str(temp))
-            print(spots_used)
 
     elif direction.upper() == "UP":
         temp = place[0]
-        for h in range(2):
+        for h in range(5):
             if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+                p1_ship_grid.grid[letter - h, int(place[1])] = ship_type_init
             else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
+                p2_ship_grid.grid[letter - h, int(place[1])] = ship_type_init
+
             if h != 0:
                 temp = chr(ord(temp.upper()) - 1)
             spots_used.append(temp.upper() + place[1])
-            print(spots_used)
 
     elif direction.upper() == "DOWN":
         temp = place[0]
-        for h in range(2):
+        for h in range(5):
             if (player == 1):
-                p1_ship_grid.grid[letter, int(place[1])-h] = "D"
+                p1_ship_grid.grid[letter + h, int(place[1])] = ship_type_init
             else:
-                p2_ship_grid.grid[letter, int(place[1])-h] = "D"
+                p2_ship_grid.grid[letter + h, int(place[1])] = ship_type_init
+
             if h != 0:
                 temp = chr(ord(temp.upper()) + 1)
             spots_used.append(temp.upper() + place[1])
-            print(spots_used)
 
     if (player == 1):
         p1_ship_grid.display_grid()
     else:
         p2_ship_grid.display_grid()
 
+
+# This method sets the ships to the proper spots on the 'board' (or grid) depending on what the user inputs
+def set_ships(player):
+
+    set_ships_init(player, "Aircraft Carrier", "C")
+    set_ships_init(player, "Battleship", "B")
+    set_ships_init(player, "Carrier", "R")
+    set_ships_init(player, "Submarine", "S")
+    set_ships_init(player, "Destroyer", "D")
 
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
 # Also checks to see if another ship occupies the desired space using the 'check' method
