@@ -1,19 +1,36 @@
 from graphics import *
+from ships import *
 
 p1_ship_grid = Grid()
 p1_hit_grid = Grid()
 p2_ship_grid = Grid()
 p2_hit_grid = Grid()
 
+p1_carrier = Ship(5)
+p2_carrier = Ship(5)
+p1_battleship = Ship(4)
+p2_battleship = Ship(4)
+p1_cruiser = Ship(3)
+p2_cruiser = Ship(3)
+p1_submarine = Ship(3)
+p2_submarine = Ship(3)
+p1_destroyer = Ship(2)
+p2_destroyer = Ship(2)
 
 spots_used = []
 
+p1_spots_attacked = []
+p2_spots_attacked = []
 
+for i in range (100):
+    p1_spots_attacked.append("null")
+    p2_spots_attacked.append("null")
+    
 def set_ships_init(player, ship_type, ship_type_init, ship_length):
     # Sets Aircraft Carrier position
     j = 0
     # Calls the data_validation method to get input from user and validate it
-    place = data_validation(player, ship_type)
+    place = data_validation(player, ship_type, ship_length)
     # Converts the letter to an integer to make it compatable with arrays
     letter = set_letter(place[0].upper())
     hv = input("Which direction do you want to put the ship? ((H)orizontal or (V)ertical): ")
@@ -194,8 +211,8 @@ def set_ships(player):
 
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
 # Also checks to see if another ship occupies the desired space using the 'check' method
-def data_validation(player, ship_type):
-    place = input(f"Which square will Player {player} put the {ship_type}? (ex. F5) ")
+def data_validation(player, ship_type, ship_length):
+    place = input(f"Which square will Player {player} put the {ship_type} ({ship_length} spaces)? (ex. F5) ")
     while len(place) != 2:
         place = input(f"Either too short or too long. Which square will Player {player} put the {ship_type}? (ex. F5) ")
     while check(place.upper()):
@@ -206,15 +223,47 @@ def data_validation(player, ship_type):
                 f"Either too short or too long. Which square will Player {player} put the {ship_type}? (ex. F5) ")
     return place
 
-
+# Gets the attack spot and ensures valid input and that the spot is availiable 
+def attack_validation(player):
+    place = input(f"Which square will Player {player} attack? (ex. F5) ")
+    while len(place) != 2:
+        place = input(f"Either too short or too long. Which square will Player {player} attack? (ex. F5) ")
+    new_place = convert_to_attack(place)
+    while attack_check(player, new_place):
+        place = input(
+            f"That square has already been attacked. Which square will Player {player} attack? (ex. F5) ")
+        while len(place) != 2:
+            place = input(
+                f"Either too short or too long. Which square will Player {player} attack? (ex. F5) ")
+        new_place = convert_to_attack(place)
+    return new_place
+    
 # If any strings in spot_used equals the parameters passed in, it will return true then print an error message
 def check(spot):
     for i in spots_used:
         if spot == i:
             return True
     return False
+ 
+# Checks if the spot in the grid has already been attacked 
+def attack_check(player, place):
+    hit_char = "x"
+    miss_char = "o"
+    dup = False
+    if (player == 1):
+        if (p1_spots_attacked[place] == (hit_char or miss_char)):
+            dup = True
+    else:
+        if (p2_spots_attacked[place] == (hit_char or miss_char)):
+            dup = True
+    return dup
 
-
+# Converts the attack coordinate to a single number for the hit grids
+def convert_to_attack(place):
+    one = set_letter(place[0].upper())
+    two = int(place[1])
+    return ((10*one) + two)
+    
 # Sets the letter passed in to a number and returns it
 def set_letter(letter):
     if letter == "A":
@@ -239,29 +288,107 @@ def set_letter(letter):
         l = 9
     return l
 
+# Checks for winner
+def check_winner():
+    if (p1_battleship.check() or p2_battleship.check()):
+        print("Battleship sunk")
+    if (p1_carrier.check() or p2_carrier.check()):
+        print("Carrier sunk")
+    if (p1_destroyer.check() or p2_destroyer.check()):
+        print("Destroyer sunk")
+    if (p1_submarine.check() or p2_submarine.check()):
+        print("Submarine sunk")
+    if (p1_cruiser.check() or p2_cruiser.check()):
+        print("Cruiser sunk")
+    if (p1_battleship.check() and p1_carrier.check() and p1_cruiser.check() and p1_destroyer.check()):
+        return 2
+    if (p2_battleship.check() and p2_carrier.check() and p2_cruiser.check() and p2_destroyer.check()):
+        return 1
+    else:
+        return 0
+        
+# Controls a player's move
+def move(player):
+    hit_char = "x"
+    miss_char = "o"
+    
+    if (player == 1):
+        other = 2
+    else:
+        other = 1
+        
+    if (player ==  1):
+        print(f"\nPlayer {other}'s hit grid")
+        p1_hit_grid.display_grid()
+        place = attack_validation(player)
+        if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) != "·"):
+            p1_spots_attacked[place] = hit_char
+            p1_hit_grid.grid[int(((place-(place%10))/10)), int((place%10))] = hit_char
+            if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "C"):
+                p2_carrier.hit()
+            if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "B"):
+                p2_battleship.hit()
+            if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "R"):
+                p2_cruiser.hit()
+            if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "S"):
+                p2_submarine.hit()
+            if ((p2_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "D"):
+                p2_destroyer.hit()
+        else:
+            p1_spots_attacked[place] = miss_char
+            p1_hit_grid.grid[int(((place-(place%10))/10)), int((place%10))] = miss_char
+        p1_hit_grid.display_grid()
+    else: 
+        print(f"Player {other}'s hit grid")
+        p2_hit_grid.display_grid()
+        place = attack_validation(player)
+        if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) != "·"):
+            p2_spots_attacked[place] = hit_char
+            p2_hit_grid.grid[int(((place-(place%10))/10)), int((place%10))] = hit_char
+            if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "C"):
+                p1_carrier.hit()
+            if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "B"):
+                p1_battleship.hit()
+            if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "R"):
+                p1_cruiser.hit()
+            if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "S"):
+                p1_submarine.hit()
+            if ((p1_ship_grid.grid[int(((place-(place%10))/10)), int((place%10))]) == "D"):
+                p1_destroyer.hit()
+        else:
+            p2_spots_attacked[place] = miss_char
+            p2_hit_grid.grid[int(((place-(place%10))/10)), int((place%10))] = miss_char
+        p2_hit_grid.display_grid()
+ 
 def main_loop():
     who = 1
-    winner = "none"
-    while (winner == "none"):
+    winner = 0
+    clear_screen()
+    while (winner == 0):
         move(who)
         if (who == 1):
             who = 2
-            p1_hit_grid.display_grid()
+            winner = check_winner()
             cont = input("Press enter to continue...")
         else:
             who = 1
-            p2_hit_grid.display_grid()
+            winner = check_winner()
             cont = input("Press enter to continue...")
+    clear_screen()
+    print(f"Player {winner} is the winnner!")
             
 def main():
     console_setup()
     p1_ship_grid.display_grid()
     set_ships(1)
     p1_ship_grid.display_grid()
+    cont = input("Press enter to continue...")
     spots_used.clear()
+    clear_screen()
     p2_ship_grid.display_grid()
     set_ships(2)
     p2_ship_grid.display_grid()
+    cont = input("Press enter to continue...")
     main_loop()
     
 if __name__ == "__main__":

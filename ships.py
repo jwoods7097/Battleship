@@ -1,7 +1,14 @@
 class Ship:
-    def __init__(self, hitpoints, player):  
-        self.hp = hitpoints
-        self.player = player
+    def __init__(self, hitpoints):  
+        self.hitpoints = hitpoints
         
     def hit(self):
-        hitpoints -= 1
+        self.hitpoints = self.hitpoints - 1
+        
+    def check(self):
+        self.afloat = False
+        if (self.hitpoints == 0):
+            self.afloat = True
+        return self.afloat
+        
+    

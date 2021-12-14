@@ -23,7 +23,6 @@ def clear_screen():
         os.system("clear")
     print_title()
 
-
 class Grid:
     GRID_SIZE = 10
 
