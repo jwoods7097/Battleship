@@ -2,12 +2,6 @@ import numpy as np
 import os
 
 
-# Standard DOS terminal size for that old-school feel
-def console_setup():
-    os.system("mode con: cols=80 lines=25")
-    clear_screen()
-
-
 # Display title ASCII art and authors
 def print_title():
     file = open("title.txt", "r")

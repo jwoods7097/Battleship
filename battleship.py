@@ -94,14 +94,17 @@ def set_ships(player):
 # Checks to see if the position the user inputted is either not given in the right format (ex. 'A' or 'F123'),
 # and returns the x and y coordinates for the grid once it is
 def get_ship_location(player, ship_type, ship_length):
-    place = input(f"\nWhere will Player {player} put the {ship_type} ({ship_length} spaces)? (ex. F5) ")
-    while len(place) != 2:
-        place = input(f"Input either too short or too long.\n\nWhere will Player {player} put the {ship_type}? (ex. F5) ")
-    x, y = convert_to_xy(place)
-    while 0 > x > 9 or 0 > y > 9:
-        place = input(f"Invalid location!\n\nWhere will Player {player} put the {ship_type}? (ex. F5) ")
-        x, y = convert_to_xy(place)
-    return x, y
+    valid = False
+    while not valid:
+        valid = True
+        place = input(f"\nWhere will Player {player} put the {ship_type} ({ship_length} spaces)? (ex. F5) ")
+        if len(place) != 2:
+            valid = False
+            print("Input either too short or too long.")
+        elif ord(place[0].upper()) not in range(65, 75) or not place[1].isdigit():
+            valid = False
+            print("Invalid location!")
+    return convert_to_xy(place)
 
 
 # Gets a valid direction for the ship
@@ -114,15 +117,21 @@ def get_ship_direction():
 
 # Gets the attack spot and ensures valid input and that the spot is available
 def get_attack_location(player):
-    place = input(f"\nWhich square will Player {player} attack? (ex. F5) ")
-    while len(place) != 2:
-        place = input(f"Input either too short or too long.\n\nWhich square will Player {player} attack? (ex. F5) ")
-    x, y = convert_to_xy(place)
-    while attack_check(player, x, y):
-        place = input(f"That square has already been attacked!\n\nWhich square will Player {player} attack? (ex. F5) ")
-        while len(place) != 2:
-            place = input(f"Input either too short or too long.\n\nWhich square will Player {player} attack? (ex. F5) ")
-        x, y = convert_to_xy(place)
+    valid = False
+    while not valid:
+        valid = True
+        place = input(f"\nWhich square will Player {player} attack? (ex. F5) ")
+        if len(place) != 2:
+            valid = False
+            print("Input either too short or too long.")
+        elif ord(place[0].upper()) not in range(65, 75) or not place[1].isdigit():
+            valid = False
+            print("Invalid location!")
+        else:
+            x, y = convert_to_xy(place)
+            if attack_check(player, x, y):
+                valid = False
+                print("That square has already been attacked!")
     return x, y
 
 
@@ -155,7 +164,6 @@ def check_winner():
 
 
 # Controls a player's move
-# For some odd reason this method cannot access the global ships sank variables
 def move(player):
     global p1_ships_sank
     global p2_ships_sank
